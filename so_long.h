@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marleand <marleand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marleand <marleand@student42.lisboa.pt>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 11:23:19 by marleand          #+#    #+#             */
-/*   Updated: 2025/05/03 15:12:02 by marleand         ###   ########.fr       */
+/*   Updated: 2025/07/21 11:52:34 by marleand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@ typedef struct s_data {
 }   t_data;
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+char	*get_next_line(int fd)
 
 #endif
