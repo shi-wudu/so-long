@@ -37,8 +37,63 @@ char    **copy_map(char **ber)
 	copy[i] = NULL;
 	return (copy);
 }
-find player ()
+int	find_player(char **map, int *x, int *y)
+{
+    int	row;
+    int	col;
 
-flood qlqr coisa
+    row = 0;
+    while (map[row])
+    {
+        col = 0;
+        while (map[row][col])
+        {
+            if (map[row][col] == 'P')
+            {
+                *x = col;
+                *y = row;
+                return (1);
+            }
+            col++;
+        }
+        row++;
+    }
+    return (0);
+}
+static void	flood_fill(char **map, int x, int y, int *items)
+{
+    if (!map[y] || !map[y][x] || map[y][x] == '1')
+        return;
 
-num sei
+    if (map[y][x] == 'C' || map[y][x] == 'E')
+        (*items)++;
+
+    map[y][x] = '1'; 
+
+    flood_fill(map, x + 1, y, items);  // Right
+    flood_fill(map, x - 1, y, items);  // Left
+    flood_fill(map, x, y + 1, items);  // Down
+    flood_fill(map, x, y - 1, items);  // Up
+}
+int	is_it_valid(char **map, int collectibles)
+{
+	char	**cpy;
+	int			x;
+	int			y;
+	int		items;
+	int		object;
+
+	if(!find_player(map, &x, &y))
+		return(0);
+
+	cpy = copy_map(map);
+	if(!cpy)
+		return (0);
+	
+	items = 0;
+	flood_fill(cpy, x, y, &items);
+	free_args(cpy);
+
+	object = collectibles + 1;
+	return (items == object);
+}

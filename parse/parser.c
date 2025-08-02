@@ -12,29 +12,17 @@
 
 #include "so_long.h"
 
-static int	parse_the_map(int fd, char **ber)
+static int	is_wall_row(char *row)
 {
-	char	*line;
-	size_t		map_len;
-	int		pce[3];		// P, C, E counters
-	int		i;
+	int	i;
 
 	i = 0;
-	map_len = 1;		// haven't set width yet
-	ft_bzero(pce, sizeof(pce));
-	line = get_next_line(fd);
-	while (line)
+	while (row[i])
 	{
-		if (map_len == 1)		// first line sets width standard
-			map_len = ft_strlen(line);
-		if (ft_strlen(line) != map_len || !parse_line(line, pce))
-			return (print_error("Map line invalid."), free_args(ber), 0);
-		ber[i++] = line;
-		line = get_next_line(fd);
+		if (row[i] != '1')		// entire row must be walls
+			return (0);
+		i++;
 	}
-	ber[i] = NULL;
-	if (!final_parser(ber, pce))		// final validation
-		return (print_error("Map invalid."), free_args(ber), 0);
 	return (1);
 }
 
@@ -63,7 +51,6 @@ static int	parse_line(char *line, int *pce)
 static int	final_parser(char **ber, int *pce)
 {
 	int	i;
-	int	j;
 
 	i = 0;
 	while (ber[i])		// find last row
@@ -72,19 +59,37 @@ static int	final_parser(char **ber, int *pce)
 		return (0);
 	if (pce[0] != 1 || pce[2] != 1 || pce[1] < 1)		// exactly 1P, 1E, at least 1C
 		return (0);
+
+	if (!is_it_valid(ber, pce[1]))
+    	return (0);
 	return (1);
 }
 
-static int	is_wall_row(char *row)
+
+int	parser(int fd, char **ber, int *amount_of_collectibles)
 {
-	int	i;
+	char	*line;
+	size_t		map_len;
+	int		pce[3];		// P, C, E counters
+	int		i;
 
 	i = 0;
-	while (row[i])
+	map_len = 1;		// haven't set width yet
+	ft_bzero(pce, sizeof(pce));
+	line = get_next_line(fd);
+	while (line)
 	{
-		if (row[i] != '1')		// entire row must be walls
-			return (0);
-		i++;
+		if (map_len == 1)		// first line sets width standard
+			map_len = ft_strlen(line);
+		if (ft_strlen(line) != map_len || !parse_line(line, pce))
+			return (print_error("Map line invalid."), free_args(ber), 0);
+		ber[i++] = line;
+		line = get_next_line(fd);
 	}
+	ber[i] = NULL;
+	if (!final_parser(ber, pce))
+		return (print_error("Map invalid."), free_args(ber), 0);
+
+	*amount_of_collectibles = pce[1];
 	return (1);
 }
