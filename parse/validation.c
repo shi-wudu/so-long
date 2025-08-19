@@ -75,6 +75,55 @@ static void	flood_fill(char **map, int x, int y, int *items)
     flood_fill(map, x, y + 1, items);  // Down
     flood_fill(map, x, y - 1, items);  // Up
 }
+
+static int but_is_it_valid(char **map)
+{
+	int i;
+
+	i = 0;
+	if (!map || !map[0] || !map[0][0])
+	{
+		print_error("Empty or invalid map.");
+		return (0);
+	}
+
+    while (map[i])
+    {
+        if (ft_strlen(map[i]) == 0)
+        {
+            print_error("Map contains empty lines");
+            return (0);
+        }
+        i++;
+    }
+	return (1);
+}
+
+static int	check_valid_chars(char **map)
+{
+    int	i;
+    int	j;
+
+    i = 0;
+    while (map[i])
+    {
+        j = 0;
+        while (map[i][j])
+        {
+            if (map[i][j] != '0' && map[i][j] != '1' && 
+                map[i][j] != 'P' && map[i][j] != 'E' && 
+                map[i][j] != 'C')
+            {
+                print_error("Invalid character in map");
+                return (0);
+            }
+            j++;
+        }
+        i++;
+    }
+    return (1);
+}
+
 int	is_it_valid(char **map, int collectibles)
 {
 	char	**cpy;
@@ -83,6 +132,11 @@ int	is_it_valid(char **map, int collectibles)
 	int		items;
 	int		object;
 
+	if (!but_is_it_valid(map))
+		return(0);
+
+    if (!check_valid_chars(map))
+		return (0);
 	if(!find_player(map, &x, &y))
 		return(0);
 

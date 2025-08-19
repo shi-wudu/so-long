@@ -82,7 +82,7 @@ int	parser(int fd, char **ber, int *amount_of_collectibles)
 		if (map_len == 1)		// first line sets width standard
 			map_len = ft_strlen(line);
 		if (ft_strlen(line) != map_len || !parse_line(line, pce))
-			return (print_error("Map line invalid."), free_args(ber), 0);
+			return (print_error("Map line invalid."), free_args(ber), free(line), 0);
 		ber[i++] = line;
 		line = get_next_line(fd);
 	}

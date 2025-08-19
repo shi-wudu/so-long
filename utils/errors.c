@@ -29,15 +29,27 @@ void	free_args(char **args)
 
 void	cleanup(t_game *game)
 {
-	if(game->win)
+
+	if (game->wall.img)
+		mlx_destroy_image(game->mlx, game->wall.img);
+	if (game->floor.img)
+		mlx_destroy_image(game->mlx, game->floor.img);
+	if (game->player.img)
+		mlx_destroy_image(game->mlx, game->player.img);
+	if (game->collectible.img)
+		mlx_destroy_image(game->mlx, game->collectible.img);
+	if (game->exit.img)
+		mlx_destroy_image(game->mlx, game->exit.img);
+
+	if (game->win)
 		mlx_destroy_window(game->mlx, game->win);
 
-	if(game->mlx)
+	if (game->mlx)
 	{
 		mlx_destroy_display(game->mlx);
 		free(game->mlx);
 	}
-	if(game->map)
+	if (game->map)
 		free_args(game->map);
 }
 
