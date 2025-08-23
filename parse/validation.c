@@ -11,22 +11,23 @@
 /* ************************************************************************** */
 #include "so_long.h"
 
-char    **copy_map(char **ber)
+char	**copy_map(char **ber)
 {
-	int     i;
-	int     height;
-	char    **copy;
+	int		i;
+	int		height;
+	char	**copy;
 
 	height = 0;
 	i = 0;
-	while(ber[height])
+	while (ber[height])
 		height++;
 	copy = malloc(sizeof(char *) * (height + 1));
 	if (!copy)
 		return (NULL);
-	while(i < height)
+	while (i < height)
 	{
-		if (!(copy[i] = ft_strdup(ber[i])))
+		copy[i] = ft_strdup(ber[i]);
+		if (!copy[i])
 		{
 			copy[i] = NULL;
 			free_args(copy);
@@ -37,48 +38,47 @@ char    **copy_map(char **ber)
 	copy[i] = NULL;
 	return (copy);
 }
+
 int	find_player(char **map, int *x, int *y)
 {
-    int	row;
-    int	col;
+	int	row;
+	int	col;
 
-    row = 0;
-    while (map[row])
-    {
-        col = 0;
-        while (map[row][col])
-        {
-            if (map[row][col] == 'P')
-            {
-                *x = col;
-                *y = row;
-                return (1);
-            }
-            col++;
-        }
-        row++;
-    }
-    return (0);
+	row = 0;
+	while (map[row])
+	{
+		col = 0;
+		while (map[row][col])
+		{
+			if (map[row][col] == 'P')
+			{
+				*x = col;
+				*y = row;
+				return (1);
+			}
+			col++;
+		}
+		row++;
+	}
+	return (0);
 }
+
 static void	flood_fill(char **map, int x, int y, int *items)
 {
-    if (!map[y] || !map[y][x] || map[y][x] == '1')
-        return;
-
-    if (map[y][x] == 'C' || map[y][x] == 'E')
-        (*items)++;
-
-    map[y][x] = '1'; 
-
-    flood_fill(map, x + 1, y, items);  // Right
-    flood_fill(map, x - 1, y, items);  // Left
-    flood_fill(map, x, y + 1, items);  // Down
-    flood_fill(map, x, y - 1, items);  // Up
+	if (!map[y] || !map[y][x] || map[y][x] == '1')
+		return ;
+	if (map[y][x] == 'C' || map[y][x] == 'E')
+		(*items)++;
+	map[y][x] = '1';
+	flood_fill(map, x + 1, y, items);
+	flood_fill(map, x - 1, y, items);
+	flood_fill(map, x, y + 1, items);
+	flood_fill(map, x, y - 1, items);
 }
 
-static int but_is_it_valid(char **map)
+static int	but_is_it_valid(char **map)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!map || !map[0] || !map[0][0])
@@ -86,68 +86,39 @@ static int but_is_it_valid(char **map)
 		print_error("Empty or invalid map.");
 		return (0);
 	}
-
-    while (map[i])
-    {
-        if (ft_strlen(map[i]) == 0)
-        {
-            print_error("Map contains empty lines");
-            return (0);
-        }
-        i++;
-    }
+	while (map[i])
+	{
+		if (ft_strlen(map[i]) == 0)
+		{
+			print_error("Map contains empty lines");
+			return (0);
+		}
+		i++;
+	}
 	return (1);
 }
 
 static int	check_valid_chars(char **map)
 {
-    int	i;
-    int	j;
+	int	i;
+	int	j;
 
-    i = 0;
-    while (map[i])
-    {
-        j = 0;
-        while (map[i][j])
-        {
-            if (map[i][j] != '0' && map[i][j] != '1' && 
-                map[i][j] != 'P' && map[i][j] != 'E' && 
-                map[i][j] != 'C')
-            {
-                print_error("Invalid character in map");
-                return (0);
-            }
-            j++;
-        }
-        i++;
-    }
-    return (1);
-}
-
-int	is_it_valid(char **map, int collectibles)
-{
-	char	**cpy;
-	int			x;
-	int			y;
-	int		items;
-	int		object;
-
-	if (!but_is_it_valid(map))
-		return(0);
-
-    if (!check_valid_chars(map))
-		return (0);
-	if(!find_player(map, &x, &y))
-		return(0);
-
-	cpy = copy_map(map);
-	if(!cpy)
-		return (0);
-	
-	items = 0;
-	flood_fill(cpy, x, y, &items);
-	free_args(cpy);
-
-	object = collectibles + 1;
-	return (items == object);
+	i = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if (map[i][j] != '0' && map[i][j] != '1' &&
+				map[i][j] != 'P' && map[i][j] != 'E' &&
+				map[i][j] != 'C')
+			{
+				print_error("Invalid character in map");
+				return (0);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (1);
 }

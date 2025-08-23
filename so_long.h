@@ -6,7 +6,7 @@
 /*   By: marleand <marleand@student42.lisboa.pt>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 11:23:19 by marleand          #+#    #+#             */
-/*   Updated: 2025/08/02 17:34:59 by marleand         ###   ########.fr       */
+/*   Updated: 2025/08/23 11:54:27 by marleand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,17 @@
 # define MAX_WIDTH 1920
 # define MAX_HEIGHT 1080
 
+typedef struct s_data
+{
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}	t_data;
 
-typedef struct s_data {
-	void    *img;              // The MLX image pointer (used internally)
-	char    *addr;             // Address of the image buffer (raw pixel data)
-	int     bits_per_pixel;    // Bits per pixel (usually 32 for RGBA) (0, 0, 0, 0)
-	int     line_length;       // Number of bytes in a single row of pixels
-	int     endian;            // Not sure
-}   t_data;
-
-typedef struct s_game {
+typedef struct s_game
+{
 	void	*mlx;
 	void	*win;
 	char	**map;

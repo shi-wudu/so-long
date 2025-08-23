@@ -29,7 +29,6 @@ void	free_args(char **args)
 
 void	cleanup(t_game *game)
 {
-
 	if (game->wall.img)
 		mlx_destroy_image(game->mlx, game->wall.img);
 	if (game->floor.img)
@@ -40,10 +39,8 @@ void	cleanup(t_game *game)
 		mlx_destroy_image(game->mlx, game->collectible.img);
 	if (game->exit.img)
 		mlx_destroy_image(game->mlx, game->exit.img);
-
 	if (game->win)
 		mlx_destroy_window(game->mlx, game->win);
-
 	if (game->mlx)
 	{
 		mlx_destroy_display(game->mlx);
@@ -69,10 +66,10 @@ int	is_it_ber(char *map)
 	len = ft_strlen(map);
 	if (len < 4)
 		return (0);
-	if (map[len - 4] == '.' &&
-		map[len - 3] == 'b' &&
-		map[len - 2] == 'e' &&
-		map[len - 1] == 'r')
+	if (map[len - 4] == '.' && \
+map[len - 3] == 'b' && \
+map[len - 2] == 'e' && \
+map[len - 1] == 'r')
 		return (1);
 	return (0);
 }

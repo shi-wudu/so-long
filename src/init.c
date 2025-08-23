@@ -17,7 +17,7 @@ static int	init_window(t_game *game, int map_width, int map_height)
 	game->mlx = mlx_init();
 	if (!game->mlx)
 		return (0);
-	game->win = mlx_new_window(game->mlx, map_width * TILE_SIZE, 
+	game->win = mlx_new_window(game->mlx, map_width * TILE_SIZE,
 			map_height * TILE_SIZE, "so_long");
 	mlx_key_hook(game->win, key_handler, game);
 	mlx_hook(game->win, 17, 0, close_handler, game);
@@ -31,17 +31,17 @@ static int	load_textures(t_game *game)
 	int	img_width;
 	int	img_height;
 
-	game->wall.img = mlx_xpm_file_to_image(game->mlx, "sprite/wall.xpm", 
+	game->wall.img = mlx_xpm_file_to_image(game->mlx, "sprite/wall.xpm",
 			&img_width, &img_height);
-	game->floor.img = mlx_xpm_file_to_image(game->mlx, "sprite/floor.xpm", 
+	game->floor.img = mlx_xpm_file_to_image(game->mlx, "sprite/floor.xpm",
 			&img_width, &img_height);
-	game->player.img = mlx_xpm_file_to_image(game->mlx, "sprite/player.xpm", 
+	game->player.img = mlx_xpm_file_to_image(game->mlx, "sprite/player.xpm",
 			&img_width, &img_height);
-	game->collectible.img = mlx_xpm_file_to_image(game->mlx, 
+	game->collectible.img = mlx_xpm_file_to_image(game->mlx,
 			"sprite/collectible.xpm", &img_width, &img_height);
-	game->exit.img = mlx_xpm_file_to_image(game->mlx, "sprite/exit.xpm", 
+	game->exit.img = mlx_xpm_file_to_image(game->mlx, "sprite/exit.xpm",
 			&img_width, &img_height);
-	if (!game->wall.img || !game->floor.img || !game->player.img 
+	if (!game->wall.img || !game->floor.img || !game->player.img
 		|| !game->collectible.img || !game->exit.img)
 	{
 		print_error("Failed to load textures");
@@ -56,7 +56,6 @@ int	init_game(t_game *game, char **map, int collectible_count)
 	int	map_height;
 
 	ft_memset(game, 0, sizeof(t_game));
-	
 	map_height = 0;
 	while (map[map_height])
 		map_height++;
@@ -72,4 +71,46 @@ int	init_game(t_game *game, char **map, int collectible_count)
 	render_map(game);
 	render_player(game);
 	return (1);
+}
+
+int	key_handler(int keycode, t_game *game)
+{
+	if (keycode == ESC_KEY)
+	{
+		cleanup(game);
+		exit(0);
+	}
+	if (keycode == W_KEY)
+		handle_w_key(game);
+	if (keycode == S_KEY)
+		handle_s_key(game);
+	if (keycode == A_KEY)
+		handle_a_key(game);
+	if (keycode == D_KEY)
+		handle_d_key(game);
+	return (0);
+}
+
+int	is_it_valid(char **map, int collectibles)
+{
+	char	**cpy;
+	int		x;
+	int		y;
+	int		items;
+	int		object;
+
+	if (!but_is_it_valid(map))
+		return (0);
+	if (!check_valid_chars(map))
+		return (0);
+	if (!find_player(map, &x, &y))
+		return (0);
+	cpy = copy_map(map);
+	if (!cpy)
+		return (0);
+	items = 0;
+	flood_fill(cpy, x, y, &items);
+	free_args(cpy);
+	object = collectibles + 1;
+	return (items == object);
 }

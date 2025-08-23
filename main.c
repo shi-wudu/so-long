@@ -6,7 +6,7 @@
 /*   By: marleand <marleand@student42.lisboa.pt>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 11:26:00 by marleand          #+#    #+#             */
-/*   Updated: 2025/08/19 16:50:09 by marleand         ###   ########.fr       */
+/*   Updated: 2025/08/23 10:29:22 by marleand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	main(int argc, char **argv)
 	map = malloc(sizeof(char *) * 101);
 	if (!map)
 		return (close(fd), print_error("Memory allocation failed"), 1);
-
 	ft_memset(map, 0, sizeof(char *) * 101);
 	if (!parser(fd, map, &collectible_count))
 		return (close(fd), 1);
