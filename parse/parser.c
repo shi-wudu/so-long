@@ -26,6 +26,27 @@ static int	is_wall_row(char *row)
 	return (1);
 }
 
+static int	check_map_size(char **map)
+{
+	int	width;
+	int	height;
+	int	max_width;
+	int	max_height;
+
+	height = 0;
+	while (map[height])
+		height++;
+	width = ft_strlen(map[0]);
+	max_width = 1920 / TILE_SIZE;
+	max_height = 1080 / TILE_SIZE;
+	if (width > max_width || height > max_height)
+	{
+		print_error("Map too big for screen");
+		return (0);
+	}
+	return (1);
+}
+
 static int	parse_line(char *line, int *pce)
 {
 	int	i;
@@ -61,6 +82,8 @@ static int	final_parser(char **ber, int *pce)
 		return (0);
 	if (!is_it_valid(ber, pce[1]))
 		return (0);
+	if (!check_map_size(ber))
+		return (0);
 	return (1);
 }
 
@@ -75,6 +98,8 @@ int	parser(int fd, char **ber, int *amount_of_collectibles)
 	map_len = 1;
 	ft_bzero(pce, sizeof(pce));
 	line = get_next_line(fd);
+	if (!line)
+		return (free_args(ber), print_error("Empty file."), 0);
 	while (line)
 	{
 		if (map_len == 1)

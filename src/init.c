@@ -73,22 +73,11 @@ int	init_game(t_game *game, char **map, int collectible_count)
 	return (1);
 }
 
-int	key_handler(int keycode, t_game *game)
+int	can_it_move(t_game *game, int new_x, int new_y)
 {
-	if (keycode == ESC_KEY)
-	{
-		cleanup(game);
-		exit(0);
-	}
-	if (keycode == W_KEY)
-		handle_w_key(game);
-	if (keycode == S_KEY)
-		handle_s_key(game);
-	if (keycode == A_KEY)
-		handle_a_key(game);
-	if (keycode == D_KEY)
-		handle_d_key(game);
-	return (0);
+	if (game->map[new_y][new_x] == '1')
+		return (0);
+	return (1);
 }
 
 int	is_it_valid(char **map, int collectibles)

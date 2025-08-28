@@ -6,7 +6,7 @@
 /*   By: marleand <marleand@student42.lisboa.pt>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 11:23:19 by marleand          #+#    #+#             */
-/*   Updated: 2025/08/23 11:54:27 by marleand         ###   ########.fr       */
+/*   Updated: 2025/08/28 17:11:20 by marleand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,9 @@ int		ft_printf(const char *format, ...);
 int		close_handler(t_game *game);
 void	render_map(t_game *game);
 void	render_player(t_game *game);
+int		can_it_move(t_game *game, int new_x, int new_y);
+int		check_valid_chars(char **map);
+int		but_is_it_valid(char **map);
+void	flood_fill(char **map, int x, int y, int *items);
 
 #endif

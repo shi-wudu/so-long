@@ -12,13 +12,6 @@
 
 #include "so_long.h"
 
-static int	can_it_move(t_game *game, int new_x, int new_y)
-{
-	if (game->map[new_y][new_x] == '1')
-		return (0);
-	return (1);
-}
-
 static void	handle_w_key(t_game *game)
 {
 	if (can_it_move(game, game->player_x, game->player_y - 1))
@@ -113,4 +106,22 @@ game->remaining_c == 0)
 			exit(0);
 		}
 	}
+}
+
+int	key_handler(int keycode, t_game *game)
+{
+	if (keycode == ESC_KEY)
+	{
+		cleanup(game);
+		exit(0);
+	}
+	if (keycode == W_KEY)
+		handle_w_key(game);
+	if (keycode == S_KEY)
+		handle_s_key(game);
+	if (keycode == A_KEY)
+		handle_a_key(game);
+	if (keycode == D_KEY)
+		handle_d_key(game);
+	return (0);
 }

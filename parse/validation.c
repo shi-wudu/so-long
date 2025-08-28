@@ -63,7 +63,7 @@ int	find_player(char **map, int *x, int *y)
 	return (0);
 }
 
-static void	flood_fill(char **map, int x, int y, int *items)
+void	flood_fill(char **map, int x, int y, int *items)
 {
 	if (!map[y] || !map[y][x] || map[y][x] == '1')
 		return ;
@@ -76,7 +76,7 @@ static void	flood_fill(char **map, int x, int y, int *items)
 	flood_fill(map, x, y - 1, items);
 }
 
-static int	but_is_it_valid(char **map)
+int	but_is_it_valid(char **map)
 {
 	int	i;
 
@@ -98,7 +98,7 @@ static int	but_is_it_valid(char **map)
 	return (1);
 }
 
-static int	check_valid_chars(char **map)
+int	check_valid_chars(char **map)
 {
 	int	i;
 	int	j;
